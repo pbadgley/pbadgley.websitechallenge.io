@@ -354,7 +354,7 @@ window.jwplayer=function(e){function t(n){if(r[n])return r[n].exports;var i=r[n]
 
 jwplayer().registerPlugin("ping","7.0",function(e){var n,i,t,o=this;e.on("playlistItem",function(){e.off("play",null,o),n=e.getPlaylistItem(),i=n.mediaid,i&&e.once("play",function(){t=new Image,t.src="//content.jwplatform.com/ping.gif?event=item&file="+encodeURIComponent(n.file)+"&mediaid="+encodeURIComponent(i)+"&r="+Math.random()},o)})});
 jwplayer.defaults = {
-  "key": "cBbOSSR2NrVJhBgFUIdc7U77WIsc5iadKEALErFnE5J/fBVvYO/9+bWRV38=",
+  "key": "pQOGEKbRFeeADUGFMe/jK14Udm0E9/EyqkXtNvLbsVwlnsmgJM2sDHIf75k=",
   "ph": 1,
   "pid": "DEFAULT0"
 };
