@@ -1,0 +1,219 @@
+jQuery(document).ready(function() {
+	var physician_id = jQuery(".findatopdoc-reviews").attr("data-widget-id");
+	if(typeof physician_id == 'undefined' || physician_id == '') {
+		var physician_id = getUrlVars()["doctor_id"];
+		if(typeof physician_id == 'undefined' || physician_id.length < 1) {
+			console.log('Please pass either doctor id into the widget or on the request params on the page.');
+			return false;
+		}
+	}
+  var country = jQuery(".findatopdoc-reviews").attr("data-widget-country");
+	var width = jQuery(".findatopdoc-reviews").attr("data-widget-width");
+	var perPage = jQuery(".findatopdoc-reviews").attr("data-widget-page-length");
+	jQuery(".findatopdoc-reviews").css("width", width);
+	width = parseInt(width);
+	if(typeof width != 'undefined' && width > 0) {
+		jQuery(".findatopdoc-reviews").css('margin-left', '-' + (width / 2) + 'px');
+	}
+	
+   	jQuery.getFeed({
+   		url: '//iahcp.info/rss_nathan.php?physician_id=' + physician_id + '&country=' + country + '&page=1&perPage=' + perPage,
+   		success: function(feed) {
+   			var items = "";
+
+        if (feed.items.length > 0) {
+     			jQuery.each(feed.items, function(i, val) {
+       				items += "<div class='findatopdoc-review' itemscope itemtype='http://data-vocabulary.org/Review'>";
+	   				items += "<p>" + val.description + "</p>";
+	   				items += "</div>";
+	   				items += "<hr/>";
+	   			});
+	   			
+	   			
+        } else {
+          items += "<div><p>There are no reviews.</p></div>";
+        }
+
+   			var regex = /id="findatopdoc-total-reviews">([0-9]+)<\/span>/g;
+   			var match = regex.exec(feed.description);
+   			var totalItems = match[1]/perPage;
+   			if (feed.items.length > 0) {
+     			var pageLinks = "Page: ";
+     		}
+     		else {
+	     		var pageLinks = '';
+     		}
+     		for (i = 0; i < totalItems; i++) {
+     			classes = "findatopdoc-page-link";
+
+     			if ((i + 1) == 1) {
+     				classes += " findatopdoc-selected-page-link";
+     			}
+
+     			pageLinks += "<span onclick='loadPage(" + (i + 1)  + ")' class='" + classes + "'>" + (i + 1) + "</span>&nbsp;";
+     		}
+			
+			var content = feed.title;
+			content += feed.description;
+			//content += "<p><div class='findatopdoc-pagination'>" + pageLinks + "</div></p>";
+   			content += items;
+   			content += "<p><div class='findatopdoc-pagination'>" + pageLinks + "</div></p>";
+     		//content += "<div class='findatopdoc-review-footer'><p><a href='http://www.findatopdoc.com' target='_blank'><img src='//iahcp.info/images/powered_by_findatopdoc.png' alt='Powered by Findatopdoc.com'/></a></p></div>";
+
+     		jQuery(".findatopdoc-reviews").html(content);
+     		jQuery('span.raty').raty({
+     		  path: '//iahcp.info',
+			  score: function() {
+			    return $(this).attr('data-score');
+			  },
+			  readOnly: true
+			});
+   		}
+ 	});
+ 	
+ 	jQuery('.widgetContainer').on('mouseenter', '.show-details', function(e) {
+ 		var id = $(e.currentTarget).data('id');
+ 		
+	 	//hover in
+	 	jQuery('.findatopdoc-review-detail[data-id="' + id + '"]').show();
+ 	});
+ 	
+ 	jQuery('.widgetContainer').on('mouseleave', '.show-details', function(e) {
+	 	//hover out
+	 	var id = $(e.currentTarget).data('id');
+	 	
+	 	jQuery('.findatopdoc-review-detail[data-id="' + id + '"]').hide();
+ 	});	
+ 
+});
+
+function getUrlVars() {
+	var vars = {};
+	var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+		vars[key] = value;
+	});
+	return vars;
+}
+
+function loadPage(page) {
+	var physician_id = jQuery(".findatopdoc-reviews").attr("data-widget-id");
+  var country = jQuery(".findatopdoc-reviews").attr("data-widget-country");
+	var width = jQuery(".findatopdoc-reviews").attr("data-widget-width");
+	var perPage = jQuery(".findatopdoc-reviews").attr("data-widget-page-length");
+	jQuery(".findatopdoc-reviews").css("width", width);
+	
+	width = parseInt(width);
+	if(typeof width != 'undefined' && width > 0) {
+		jQuery(".findatopdoc-reviews").css('margin-left', '-' + (width / 2) + 'px');
+	}
+	
+   	jQuery.getFeed({
+   		url: '//iahcp.info/rss_nathan.php?physician_id=' + physician_id + '&country=' + country + '&page=' + page + '&perPage=' + perPage,
+   		success: function(feed) {
+   			var items = "";
+   			jQuery.each(feed.items, function(i, val) {
+     			items += "<div class='findatopdoc-review'>";
+     			items += "<p>" + val.description + "</p>";
+     			items += "<span class='findatopdoc-divider'><hr/></span>";
+     		});
+
+   			var regex = /id="findatopdoc-total-reviews">([0-9]+)<\/span>/g;
+   			var match = regex.exec(feed.description);
+   			var totalItems = match[1]/perPage;
+     		var pageLinks = "Page: ";
+     		for (i = 0; i < totalItems; i++) {
+     			classes = "findatopdoc-page-link";
+
+     			if ((i + 1) == page) {
+     				classes += " findatopdoc-selected-page-link";
+     			}
+
+     			pageLinks += "<span onclick='loadPage(" + (i + 1)  + ")' class='" + classes + "'>" + (i + 1) + "</span>&nbsp;";
+     		}
+			
+			var content = feed.title;
+			content += feed.description;
+			//content += "<div class='findatopdoc-pagination'>" + pageLinks + "</div>";
+   			content += items;
+   			content += "<div class='findatopdoc-pagination'>" + pageLinks + "</div>";
+     		//content += "<div class='findatopdoc-review-footer'><p><a href='http://www.findatopdoc.com' target='_blank'><img src='//iahcp.info/images/powered_by_findatopdoc.png' alt='Powered by Findatopdoc.com'/></a></p></div>";
+
+     		jQuery(".findatopdoc-reviews").html(content);
+     		
+     		jQuery('span.raty').raty({
+     		  path: '//iahcp.info',
+			  score: function() {
+			    return $(this).attr('data-score');
+			  },
+			  readOnly: true
+			});
+   		}
+ 	});
+}
+
+/**
+* Deprecated 
+*
+* @author Nathan Hallford
+*/
+function showDetails(event, id) {
+	var el, x, y;
+
+	el = document.getElementById(id);
+	if (window.event) {
+		x = window.event.clientX + document.documentElement.scrollLeft + document.body.scrollLeft;
+		y = window.event.clientY + document.documentElement.scrollTop + document.body.scrollTop;
+	}
+	else {
+		x = event.clientX + window.scrollX;
+		y = event.clientY + window.scrollY;
+	}
+
+	x -= 2; y -= 2;
+	y = y+15
+	el.style.left = x + "px";
+	el.style.top = y + "px";
+	el.style.display = "block";
+}
+
+function markHelpful(id) {
+	
+	var helpfulCookie = jQuery.cookie('helpful_cookie_' + doctor_id + '_' + id);
+	if(typeof helpfulCookie == 'undefined') {
+
+		jQuery.ajax({
+			url:"//iahcp.info/remote_nathan.php?target=helpful&command=update&data=" + id,
+			})
+		.always(function(result) {
+	    	jQuery("#findatopdoc-mark-helpful-" + id).text(result.Value);
+	    	jQuery("#findatopdoc-mark-helpful-link-" + id).removeClass("findatopdoc-page-link");
+	    	jQuery("#findatopdoc-mark-helpful-link-" + id).addClass("findatopdoc-inactive");
+	  	});
+	  	
+	  	jQuery.cookie('helpful_cookie_' + doctor_id + '_' + id, 1, { path: '/', expires: 30 });
+	}
+	else {
+		alert('You already marked this as helpful.');
+	}
+}
+
+function reportAbuse(id) {
+	
+	var abuseCookie = jQuery.cookie('abuse_cookie_' + doctor_id + '_' + id);
+	if(typeof abuseCookie == 'undefined') {
+
+		jQuery.ajax({
+			url:"//iahcp.info/remote_nathan.php?target=abuse&command=update&data=" + id,
+			})
+	  	.always(function(result) {
+	    	jQuery("#findatopdoc-mark-abuse-link-" + id).removeClass("findatopdoc-page-link");
+	    	jQuery("#findatopdoc-mark-abuse-link-" + id).addClass("findatopdoc-inactive");
+	  	});
+	  	
+	  	jQuery.cookie('abuse_cookie_' + doctor_id + '_' + id, 1, { path: '/', expires: 30});
+	  	
+	 }
+	 else {
+		 alert('You already marked this as abuse.');
+	 }
+}
