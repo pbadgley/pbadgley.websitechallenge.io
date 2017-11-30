@@ -1,0 +1,175 @@
+.findatopdoc-reviews {
+	background-color: white;
+	font-family: arial;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border: 2px #cecece solid;
+	font-family: arial;
+    left: 50%;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    top: 20px;
+}
+
+.findatopdoc-reviews h1 {
+	font-size: 25px;
+}
+
+.findatopdoc-reviews h2 {
+	font-size: 20px;
+}
+
+.findatopdoc-video {
+	text-align: center;
+	font-family: arial;
+}
+
+.findatopdoc-recommend-percentage {
+	color: blue;
+	font-size: 20px;
+	font-family: arial;
+}
+
+.findatopdoc-recommend-text {
+	font-size: 15px;
+	font-family: arial;
+}
+
+.findatopdoc-review-summary {
+	font-family: arial;
+}
+
+.findatopdoc-review-summary-comment {
+	display: inline-block;
+	min-height: 300px;
+	font-family: arial;
+}
+
+.findatopdoc-review-summary-count {
+	display: inline-block;
+	float: right;
+	border: 1px solid;
+	border-color: gray;
+	padding: 10px;
+	font-family: arial;
+}
+
+.findatopdoc-review-detail {
+	display: none;
+	position: absolute; 
+	left: 30%;
+	top: 20px; 
+	border: solid black 1px; 
+	padding: 10px; 
+	background-color: white;
+	border-color: blue; 
+	text-align: justify; 
+	font-size: 12px; 
+	width: 350px;
+	font-family: arial;
+	z-index: 5000;
+}
+
+.findatopdoc-review-detail h3 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.findatopdoc-total-review-count-text {
+	font-weight: bold;
+	font-family: arial;
+}
+
+.findatopdoc-review-count-text {
+	padding-left: 20px;
+	font-family: arial;
+}
+
+.findatopdoc-pagination {
+	clear: both;
+	font-family: arial;
+	text-align: right;
+	word-wrap: break-word;
+	width: 98%;
+}
+
+.findatopdoc-review {
+	clear: both;
+	font-family: arial;
+	position: relative;
+}
+
+.findatopdoc-review-text {
+	font-family: arial;
+}
+
+.findatopdoc-review-commentor {
+	color: gray;
+	font-style: italic;
+	font-family: arial;
+}
+
+.findatopdoc-review-footer {
+	text-align: right;
+	font-family: arial;
+}
+
+.findatopdoc-page-link {
+	color: blue;
+	cursor: pointer;
+	font-family: arial;
+}
+
+.findatopdoc-selected-page-link {
+	color: purple;
+	cursor: pointer;
+	font-family: arial;
+	font-weight: bold;
+}
+
+hr {
+	width:90%;
+	background: #e5e5e5;
+	color: #e5e5e5;
+}
+
+.clear {
+	clear: both;
+}
+
+.findatopdoc-inactive {
+   pointer-events: none;
+   cursor: default;
+   color: gray;
+}
+
+/** Doctor Selector --- to change the doctor **/
+div.otherDoctors {
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-bottom: 25px;
+}
+
+div.otherDoctors p:first-child {
+	text-decoration: underline;
+}
+
+div.otherDoctors ul {
+	margin: 0;
+	padding: 0;
+}
+
+div.otherDoctors ul li {
+	display: inline;
+	padding-right: 10px;
+}
+
+div.otherDoctors ul li a {
+	
+}
+
+div.otherDoctors ul li a.active-doctor {
+	font-weight: bold;
+}
